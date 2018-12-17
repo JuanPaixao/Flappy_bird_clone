@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     public UIManager uIManager;
     private Player _player;
     public int score;
+    private int _maxScore;
+    public ClickHand clickHand;
     public AudioClip scoreAudio;
     private AudioSource _audioSource;
     void Awake()
@@ -16,6 +18,10 @@ public class GameManager : MonoBehaviour
     }
     public void GameOver()
     {
+        if (score > _maxScore)
+        {
+            SaveScore();
+        }
         Time.timeScale = 0;
         uIManager.SetGameOver(true);
     }
@@ -23,6 +29,9 @@ public class GameManager : MonoBehaviour
     {
         score = 0;
         uIManager.SetScore(score);
+        _maxScore = PlayerPrefs.GetInt("Record", _maxScore);
+        uIManager.SetRecord(_maxScore);
+
     }
     public void AddPoints()
     {
@@ -37,10 +46,21 @@ public class GameManager : MonoBehaviour
         {
             obstacle.DestoyMe();
         }
-        _player.ResetPosition();
         Time.timeScale = 1;
         uIManager.SetGameOver(false);
         score = 0;
         uIManager.SetScore(score);
+        uIManager.SetRecord(_maxScore);
+        _player.ResetPosition();
+        if (clickHand != null)
+        {
+            clickHand.TurnImageOn();
+        }
+    }
+    public void SaveScore()
+    {
+        _maxScore = score;
+        PlayerPrefs.SetInt("Record", _maxScore);
+        uIManager.SetRecord(_maxScore);
     }
 }

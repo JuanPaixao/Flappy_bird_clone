@@ -7,7 +7,8 @@ public class UIManager : MonoBehaviour
 {
 
     public GameObject gameOverImage;
-    public Text score;
+    public Text score, record;
+
 
     public void SetGameOver(bool gameOver)
     {
@@ -16,5 +17,9 @@ public class UIManager : MonoBehaviour
     public void SetScore(int score)
     {
         this.score.text = score.ToString();
+    }
+    public void SetRecord(int record)
+    {
+        this.record.text = "Your max score is: " + record.ToString();
     }
 }
