@@ -11,10 +11,21 @@ public class GameManager : MonoBehaviour
     public ClickHand clickHand;
     public AudioClip scoreAudio;
     private AudioSource _audioSource;
+    private float _gameTime;
+    public float difficulty { get; private set; }
+    [SerializeField]
+    private float _changeDifficultTime;
     void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
         _player = FindObjectOfType<Player>();
+    }
+    private void Update()
+    {
+        this._gameTime += Time.deltaTime;
+        this.difficulty = this._gameTime / _changeDifficultTime;
+        this.difficulty = Mathf.Min(2, this.difficulty);
+        Debug.Log(difficulty);
     }
     public void GameOver()
     {
@@ -31,7 +42,7 @@ public class GameManager : MonoBehaviour
         uIManager.SetScore(score);
         _maxScore = PlayerPrefs.GetInt("Record", _maxScore);
         uIManager.SetRecord(_maxScore);
-
+        Time.timeScale = 1;
     }
     public void AddPoints()
     {

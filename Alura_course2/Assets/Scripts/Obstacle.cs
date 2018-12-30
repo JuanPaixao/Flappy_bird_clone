@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-    public float moveSpeed;
+    public SharedVariable moveSpeed;
     private Vector3 _playerPosition;
     private GameManager _gameManager;
     private bool _scored;
@@ -21,7 +21,7 @@ public class Obstacle : MonoBehaviour
             _gameManager.AddPoints();
             this._scored = true;
         }
-        this.transform.Translate(Vector2.left * moveSpeed * Time.deltaTime);
+        this.transform.Translate(Vector2.left * moveSpeed.value * Time.deltaTime);
     }
     public void DestoyMe()
     {

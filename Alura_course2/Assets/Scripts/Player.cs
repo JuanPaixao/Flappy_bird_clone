@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
 
     private Rigidbody2D _rb;
     public float force;
-    public bool destroyed;
+    public bool destroyed, impulse;
     private GameManager _gameManager;
     private Vector2 _initialPos;
     private void Awake()
@@ -22,26 +22,35 @@ public class Player : MonoBehaviour
         {
             if (Input.GetButtonDown("Fire1"))
             {
-                Impulse(force);
+                impulse = true;
             }
+        }
+    }
+    void FixedUpdate()
+    {
+        if (impulse == true)
+        {
+            Impulse(force);
         }
     }
     private void Impulse(float flyingForce)
     {
         _rb.velocity = Vector2.zero;
         _rb.AddForce(Vector2.up * flyingForce, ForceMode2D.Impulse);
+        impulse = false;
     }
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.gameObject.name!="Wall"){
+        if (other.gameObject.name != "Wall")
+        {
             _rb.simulated = false;
-        _gameManager.GameOver();
+            _gameManager.GameOver();
         }
     }
     public void ResetPosition()
     {
-        this.transform.position = _initialPos; 
+        this.transform.position = _initialPos;
         _rb.simulated = true;
-        
+
     }
 }
