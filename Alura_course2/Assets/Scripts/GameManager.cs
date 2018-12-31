@@ -33,8 +33,9 @@ public class GameManager : MonoBehaviour
         {
             SaveScore();
         }
-        Time.timeScale = 0;
+        uIManager.Medal(score);
         uIManager.SetGameOver(true);
+        Time.timeScale = 0;
     }
     void Start()
     {

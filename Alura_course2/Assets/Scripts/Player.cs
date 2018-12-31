@@ -10,8 +10,10 @@ public class Player : MonoBehaviour
     public bool destroyed, impulse;
     private GameManager _gameManager;
     private Vector2 _initialPos;
+    private Animator _animator;
     private void Awake()
     {
+        _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody2D>();
         _initialPos = this.transform.position;
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -25,6 +27,7 @@ public class Player : MonoBehaviour
                 impulse = true;
             }
         }
+        this._animator.SetFloat("Speed_Y", this._rb.velocity.y);
     }
     void FixedUpdate()
     {

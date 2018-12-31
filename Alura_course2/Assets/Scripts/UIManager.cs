@@ -8,6 +8,8 @@ public class UIManager : MonoBehaviour
 
     public GameObject gameOverImage;
     public Text score, record;
+    public Sprite[] medalsImages;
+    public Image medalObject;
 
 
     public void SetGameOver(bool gameOver)
@@ -22,4 +24,20 @@ public class UIManager : MonoBehaviour
     {
         this.record.text = "Your max score is: " + record.ToString();
     }
+    public void Medal(int score)
+    {
+        if (score <= 10)
+        {
+            medalObject.sprite = medalsImages[0];
+        }
+        else if (score > 10 && score <= 20)
+        {
+            medalObject.sprite = medalsImages[1];
+        }
+        else
+        {
+            medalObject.sprite = medalsImages[2];
+        }
+    }
 }
+
