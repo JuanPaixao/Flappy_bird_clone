@@ -10,7 +10,7 @@ public class Obstacle : MonoBehaviour
     private bool _scored;
     void Start()
     {
-        Destroy(this.gameObject, 7.5f);
+        Destroy(this.gameObject, 20.5f);
         this._playerPosition = GameObject.FindObjectOfType<Player>().transform.position;
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }

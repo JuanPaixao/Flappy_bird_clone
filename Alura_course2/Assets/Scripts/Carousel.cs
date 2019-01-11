@@ -19,7 +19,7 @@ public class Carousel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float movement = Mathf.Repeat(_speed.value * Time.time, this.realGroundSize); // move until the groundsize, when it reaches, repeat the translation
+        float movement = Mathf.Repeat(_speed.value * Time.time, this.realGroundSize/2); // move until the groundsize, when it reaches, repeat the translation
         this.transform.position = this._initialPos + Vector3.left * movement;
     }
 }

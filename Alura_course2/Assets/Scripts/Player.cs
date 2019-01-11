@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D _rb;
     public float force;
     public bool destroyed, impulse;
-    private GameManager _gameManager;
+    [SerializeField] private UnityEvent onHit;
     private Vector2 _initialPos;
     private Animator _animator;
     private void Awake()
@@ -16,17 +17,16 @@ public class Player : MonoBehaviour
         _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody2D>();
         _initialPos = this.transform.position;
-        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
     void Update()
     {
-        if (!destroyed)
-        {
-            if (Input.GetButtonDown("Fire1"))
-            {
-                impulse = true;
-            }
-        }
+        // if (!destroyed)
+        // {
+        //  if (Input.GetButtonDown("Fire1"))
+        // {
+        //     impulse = true;
+        // }
+        //  }
         this._animator.SetFloat("Speed_Y", this._rb.velocity.y);
     }
     void FixedUpdate()
@@ -34,6 +34,13 @@ public class Player : MonoBehaviour
         if (impulse == true)
         {
             Impulse(force);
+        }
+    }
+    public void SetImpulse()
+    {
+        if (!destroyed)
+        {
+            impulse = true;
         }
     }
     private void Impulse(float flyingForce)
@@ -47,7 +54,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.name != "Wall")
         {
             _rb.simulated = false;
-            _gameManager.GameOver();
+            this.onHit.Invoke();
         }
     }
     public void ResetPosition()
