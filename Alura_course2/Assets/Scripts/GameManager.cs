@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
         this._gameTime += Time.deltaTime;
         this.difficulty = this._gameTime / _changeDifficultTime;
         this.difficulty = Mathf.Min(2, this.difficulty);
-        Debug.Log(difficulty);
+  
     }
     public void GameOver()
     {

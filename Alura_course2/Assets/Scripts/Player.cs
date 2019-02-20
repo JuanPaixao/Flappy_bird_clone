@@ -12,11 +12,13 @@ public class Player : MonoBehaviour
     [SerializeField] private UnityEvent onHit;
     private Vector2 _initialPos;
     private Animator _animator;
+    private GameManager _gameManager;
     private void Awake()
     {
         _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody2D>();
         _initialPos = this.transform.position;
+        _gameManager = GameObject.FindObjectOfType<GameManager>().GetComponent<GameManager>();
     }
     void Update()
     {
@@ -62,5 +64,10 @@ public class Player : MonoBehaviour
         this.transform.position = _initialPos;
         _rb.simulated = true;
 
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("scored");
+        _gameManager.AddPoints();
     }
 }
