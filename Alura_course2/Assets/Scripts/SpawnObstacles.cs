@@ -8,18 +8,28 @@ public class SpawnObstacles : MonoBehaviour
     private float _actualTime;
     public GameObject Obstacle;
     public GameManager gameManager;
+    private bool _stop;
+    public int id;
+    public GameObject[] obstaclesDeactive;
     void Start()
     {
         _actualTime = _timeToSpawnEasy;
     }
     void Update()
     {
-        this._actualTime -= Time.deltaTime;
-        if (_actualTime <= 0)
+        if (!_stop)
         {
-            float randomNumber = Random.Range(-0.54f, 0.82f);
-            Instantiate(Obstacle, new Vector2(this.transform.position.x, this.transform.position.y + randomNumber), Quaternion.identity);
-            _actualTime = Mathf.Lerp(this._timeToSpawnEasy, this._timeToSpawnHard, gameManager.difficulty);
+            this._actualTime -= Time.deltaTime;
+            if (_actualTime <= 0)
+            {
+                float randomNumber = Random.Range(-0.54f, 0.82f);
+                Instantiate(Obstacle, new Vector2(this.transform.position.x, this.transform.position.y + randomNumber), Quaternion.identity);
+                _actualTime = Mathf.Lerp(this._timeToSpawnEasy, this._timeToSpawnHard, gameManager.difficulty);
+            }
         }
+    }
+    public void StopObstacles()
+    {
+        _stop = true;
     }
 }

@@ -5,7 +5,6 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
-
     private Rigidbody2D _rb;
     public float force;
     public bool destroyed, impulse;
@@ -13,12 +12,14 @@ public class Player : MonoBehaviour
     private Vector2 _initialPos;
     private Animator _animator;
     private GameManager _gameManager;
+
     private void Awake()
     {
         _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody2D>();
         _initialPos = this.transform.position;
         _gameManager = GameObject.FindObjectOfType<GameManager>().GetComponent<GameManager>();
+
     }
     void Update()
     {
@@ -57,6 +58,8 @@ public class Player : MonoBehaviour
         {
             _rb.simulated = false;
             this.onHit.Invoke();
+            this.destroyed = true;
+            _gameManager.ImDead(this.gameObject.name);
         }
     }
     public void ResetPosition()

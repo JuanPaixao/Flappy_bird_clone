@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public UIManager uIManager;
     private Player _player;
-    public int score;
+    public int score, scoreSinceDeath;
     private int _maxScore;
     public ClickHand clickHand;
     public AudioClip scoreAudio;
@@ -15,17 +15,27 @@ public class GameManager : MonoBehaviour
     public float difficulty { get; private set; }
     [SerializeField]
     private float _changeDifficultTime;
+    public bool someoneDead;
+    public int deadPlayer;
+
     void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
         _player = FindObjectOfType<Player>();
+    }
+    void Start()
+    {
+        score = 0;
+        uIManager.SetScore(score);
+        _maxScore = PlayerPrefs.GetInt("Record", _maxScore);
+        uIManager.SetRecord(_maxScore);
+        Time.timeScale = 1;
     }
     private void Update()
     {
         this._gameTime += Time.deltaTime;
         this.difficulty = this._gameTime / _changeDifficultTime;
         this.difficulty = Mathf.Min(2, this.difficulty);
-  
     }
     public void GameOver()
     {
@@ -37,14 +47,7 @@ public class GameManager : MonoBehaviour
         uIManager.SetGameOver(true);
         Time.timeScale = 0;
     }
-    void Start()
-    {
-        score = 0;
-        uIManager.SetScore(score);
-        _maxScore = PlayerPrefs.GetInt("Record", _maxScore);
-        uIManager.SetRecord(_maxScore);
-        Time.timeScale = 1;
-    }
+
     public void AddPoints()
     {
         score++;
@@ -74,5 +77,19 @@ public class GameManager : MonoBehaviour
         _maxScore = score;
         PlayerPrefs.SetInt("Record", _maxScore);
         uIManager.SetRecord(_maxScore);
+    }
+    public void ImDead(string player)
+    {
+        this.scoreSinceDeath = 0;
+        someoneDead = true;
+        deadPlayer = player == "Player1Plane" ? 1 : 2;
+        Debug.Log("I'm dead "+deadPlayer + "  " + player);
+    }
+    public void Revive()
+    {
+        if (someoneDead == true)
+        {
+            this.scoreSinceDeath++;
+        }
     }
 }

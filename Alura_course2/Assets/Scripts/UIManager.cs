@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class UIManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class UIManager : MonoBehaviour
     public Text score, record;
     public Sprite[] medalsImages;
     public Image medalObject;
+    [SerializeField] private UnityEvent whenScored;
 
 
     public void SetGameOver(bool gameOver)
@@ -18,6 +20,7 @@ public class UIManager : MonoBehaviour
     }
     public void SetScore(int score)
     {
+        this.whenScored.Invoke();
         this.score.text = score.ToString();
     }
     public void SetRecord(int record)
