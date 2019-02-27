@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D _rb;
     public float force;
     public bool destroyed, impulse;
-    [SerializeField] private UnityEvent onHit;
+    [SerializeField] private UnityEvent onHit, onRevive;
     private Vector2 _initialPos;
     private Animator _animator;
     private GameManager _gameManager;
@@ -72,5 +72,12 @@ public class Player : MonoBehaviour
     {
         Debug.Log("scored");
         _gameManager.AddPoints();
+    }
+    public void Revive()
+    {
+        this.onRevive.Invoke();
+        destroyed = false;
+        ResetPosition();
+        Debug.Log("Revived " + this.transform.gameObject.name);
     }
 }

@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     private float _changeDifficultTime;
     public bool someoneDead;
     public int deadPlayer;
+    private Player[] _resPlayer;
 
     void Awake()
     {
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour
         _maxScore = PlayerPrefs.GetInt("Record", _maxScore);
         uIManager.SetRecord(_maxScore);
         Time.timeScale = 1;
+        _resPlayer = FindObjectsOfType<Player>();
     }
     private void Update()
     {
@@ -83,13 +85,27 @@ public class GameManager : MonoBehaviour
         this.scoreSinceDeath = 0;
         someoneDead = true;
         deadPlayer = player == "Player1Plane" ? 1 : 2;
-        Debug.Log("I'm dead "+deadPlayer + "  " + player);
+        Debug.Log("I'm dead " + deadPlayer + "  " + player);
     }
     public void Revive()
     {
         if (someoneDead == true)
         {
             this.scoreSinceDeath++;
+            if (this.scoreSinceDeath >= 2 || Input.GetKeyDown(KeyCode.R))
+            {
+                this.RevivePlayer();
+            }
+        }
+    }
+    private void RevivePlayer()
+    {
+        foreach (var resPlayer in this._resPlayer)
+        {
+            if (resPlayer.destroyed)
+            {
+                resPlayer.Revive();
+            }
         }
     }
 }

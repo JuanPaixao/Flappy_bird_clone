@@ -30,6 +30,11 @@ public class SpawnObstacles : MonoBehaviour
     }
     public void StopObstacles()
     {
-        _stop = true;
+        this._stop = true;
+
+    }
+    public void StartObstacles()
+    {
+        this._stop = false;
     }
 }
