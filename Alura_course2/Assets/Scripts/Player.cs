@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     private Vector2 _initialPos;
     private Animator _animator;
     private GameManager _gameManager;
+    private ActiveCanvasInterface inactiveCanvas;
+    public Camera[] playerCamera;
 
     private void Awake()
     {
@@ -19,6 +21,7 @@ public class Player : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _initialPos = this.transform.position;
         _gameManager = GameObject.FindObjectOfType<GameManager>().GetComponent<GameManager>();
+        this.inactiveCanvas = GameObject.FindObjectOfType<ActiveCanvasInterface>();
 
     }
     void Update()
@@ -59,7 +62,14 @@ public class Player : MonoBehaviour
             _rb.simulated = false;
             this.onHit.Invoke();
             this.destroyed = true;
-            _gameManager.ImDead(this.gameObject.name);
+            if (this.gameObject.name == "Player1Plane")
+            {
+                _gameManager.ImDead(this.gameObject.name, playerCamera[0]);
+            }
+            else
+            {
+                _gameManager.ImDead(this.gameObject.name, playerCamera[1]);
+            }
         }
     }
     public void ResetPosition()

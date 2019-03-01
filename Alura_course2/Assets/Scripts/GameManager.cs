@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public UIManager uIManager;
     private Player _player;
-    public int score, scoreSinceDeath;
+    public int score, scoreSinceDeath, scoreToRevive;
     private int _maxScore;
     public ClickHand clickHand;
     public AudioClip scoreAudio;
@@ -18,11 +18,13 @@ public class GameManager : MonoBehaviour
     public bool someoneDead;
     public int deadPlayer;
     private Player[] _resPlayer;
+    private ActiveCanvasInterface inactiveInterface;
 
     void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
         _player = FindObjectOfType<Player>();
+        inactiveInterface = FindObjectOfType<ActiveCanvasInterface>();
     }
     void Start()
     {
@@ -80,11 +82,12 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt("Record", _maxScore);
         uIManager.SetRecord(_maxScore);
     }
-    public void ImDead(string player)
+    public void ImDead(string player, Camera camera)
     {
         this.scoreSinceDeath = 0;
         someoneDead = true;
         deadPlayer = player == "Player1Plane" ? 1 : 2;
+        this.inactiveInterface.Show(camera,scoreToRevive);
         Debug.Log("I'm dead " + deadPlayer + "  " + player);
     }
     public void Revive()
@@ -92,7 +95,8 @@ public class GameManager : MonoBehaviour
         if (someoneDead == true)
         {
             this.scoreSinceDeath++;
-            if (this.scoreSinceDeath >= 2 || Input.GetKeyDown(KeyCode.R))
+            inactiveInterface.DeadScoreUpdate(scoreToRevive - this.scoreSinceDeath);
+            if (this.scoreSinceDeath >= scoreToRevive)
             {
                 this.RevivePlayer();
             }
@@ -105,6 +109,8 @@ public class GameManager : MonoBehaviour
             if (resPlayer.destroyed)
             {
                 resPlayer.Revive();
+                this.scoreSinceDeath = 0;
+                inactiveInterface.Unshow();
             }
         }
     }
