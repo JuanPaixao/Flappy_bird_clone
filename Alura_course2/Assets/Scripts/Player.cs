@@ -49,7 +49,7 @@ public class Player : MonoBehaviour
             impulse = true;
         }
     }
-    private void Impulse(float flyingForce)
+    public void Impulse(float flyingForce)
     {
         _rb.velocity = Vector2.zero;
         _rb.AddForce(Vector2.up * flyingForce, ForceMode2D.Impulse);
@@ -86,7 +86,7 @@ public class Player : MonoBehaviour
     public void Revive()
     {
         this.onRevive.Invoke();
-        destroyed = false;
+        this.destroyed = false;
         ResetPosition();
         Debug.Log("Revived " + this.transform.gameObject.name);
     }

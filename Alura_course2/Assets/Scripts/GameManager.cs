@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
         score = 0;
         uIManager.SetScore(score);
         uIManager.SetRecord(_maxScore);
-        _player.ResetPosition();
+        //  _player.ResetPosition();
         if (clickHand != null)
         {
             clickHand.TurnImageOn();
@@ -84,11 +84,20 @@ public class GameManager : MonoBehaviour
     }
     public void ImDead(string player, Camera camera)
     {
-        this.scoreSinceDeath = 0;
-        someoneDead = true;
-        deadPlayer = player == "Player1Plane" ? 1 : 2;
-        this.inactiveInterface.Show(camera,scoreToRevive);
-        Debug.Log("I'm dead " + deadPlayer + "  " + player);
+        if (someoneDead)
+        {
+            this.GameOver();
+            inactiveInterface.Unshow();
+            this.RevivePlayer();
+        }
+        else
+        {
+            this.scoreSinceDeath = 0;
+            someoneDead = true;
+            deadPlayer = player == "Player1Plane" ? 1 : 2;
+            this.inactiveInterface.Show(camera, scoreToRevive);
+            Debug.Log("I'm dead " + deadPlayer + "  " + player);
+        }
     }
     public void Revive()
     {
@@ -109,8 +118,11 @@ public class GameManager : MonoBehaviour
             if (resPlayer.destroyed)
             {
                 resPlayer.Revive();
+                resPlayer.ResetPosition();
                 this.scoreSinceDeath = 0;
                 inactiveInterface.Unshow();
+                someoneDead = false;
+                Debug.Log(resPlayer.name);
             }
         }
     }
